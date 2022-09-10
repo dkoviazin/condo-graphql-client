@@ -3,7 +3,7 @@ const { CondoBot } = require('./condo')
 const {
     SIGNIN_BY_EMAIL_MUTATION,
     SIGNIN_BY_PHONE_AND_PASSWORD_MUTATION_WITH_TOKEN,
-    GET_MY_USERINFO,
+    User: UserGql,
 } = require('../lib/gql')
 
 class UserBot extends CondoBot {
@@ -40,7 +40,10 @@ class UserBot extends CondoBot {
     }
 
     async currentUser () {
-        const { data: { user } } = await this.client.query({ query: GET_MY_USERINFO })
+        const [user] = await this.getModels({
+            modelGql: UserGql,
+            where: { id: this.userId },
+        })
         return user
     }
 
