@@ -1,0 +1,20 @@
+{
+  "name": "condo-graphql-client",
+  "version": "0.0.1",
+  "description": "Graphql to authenticate on condo platform",
+  "main": "index.js",
+  "author": "Dmitry Koviazin <dkovyazin@doma.ai>",
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "apollo-link-error": "^1.1.13",
+    "apollo-upload-client": "^17.0.0",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.2",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
+    "pino": "^8.5.0",
+    "pluralize": "^8.0.0",
+    "react": "^18.2.0"
+  }
+}
