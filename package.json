@@ -5,6 +5,10 @@
   "main": "index.js",
   "author": "Dmitry Koviazin <dkovyazin@doma.ai>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dkoviazin/condo-graphql-client.git"
+  },
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "apollo-link-error": "^1.1.13",
