@@ -1,10 +1,10 @@
 require('dotenv').config()
-const { UserBot } = require('./index')
+const { UserClient } = require('./index')
 
 const { endpoint, authRequisites = {} } = process.env.INTEGRATION ? JSON.parse(process.env.INTEGRATION) : {}
 
 const bootstrap = async () => {
-    const bot = new UserBot(endpoint, authRequisites)
+    const bot = new UserClient(endpoint, authRequisites)
     const currentUser = await bot.signIn()
     console.log('Logged in as ', currentUser)
 }

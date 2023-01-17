@@ -1,8 +1,9 @@
-const { UserBot } = require('./bot/userBot')
+
+const { UserClient } = require('./bot/userClient')
 const { generateGqlQueries } = require('./lib/gql-generate.js')
 
 module.exports = {
     generateGqlQueries,
-    UserBot,
+    UserClient,
 }
 

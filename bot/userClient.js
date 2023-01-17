@@ -6,7 +6,7 @@ const {
     User: UserGql,
 } = require('../lib/gql')
 
-class UserBot extends CondoBot {
+class UserClient extends CondoBot {
 
     userId
 
@@ -50,5 +50,5 @@ class UserBot extends CondoBot {
 }
 
 module.exports = {
-    UserBot,
+    UserClient,
 }
