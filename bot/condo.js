@@ -9,6 +9,14 @@ const { Logger } = require('../lib/logger')
 const { RetryLink } = require('@apollo/client/link/retry')
 const { MAX_REQUESTS_IN_BATCH, MAX_RETRIES_ON_NETWORK_ERROR } = require('../constants')
 
+const FormData = require('form-data')
+
+class UploadingFile {
+    constructor (stream) {
+        this.stream = stream
+    }
+}
+
 class CondoBot {
 
 
@@ -211,8 +219,23 @@ class CondoBot {
         })
     }
 
+    createUploadFile (stream) {
+        return new UploadingFile(stream)
+    }
+
     uploadTerminateLink () {
-        return createUploadLink({ uri: this.endpoint, fetch })
+        return createUploadLink({
+            uri: this.endpoint,
+            includeExtensions: true,
+            isExtractableFile: (value) => {
+                return value instanceof UploadingFile
+            },
+            FormData,
+            formDataAppendFile: (form, name, file) => {
+                form.append(name, file.stream)
+            },
+            fetch,
+        })
     }
 
     batchTerminateLink () {
