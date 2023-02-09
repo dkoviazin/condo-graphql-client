@@ -7,7 +7,7 @@ const fetch = require('cross-fetch/polyfill').fetch
 const { Logger } = require('../lib/logger')
 
 const { RetryLink } = require('@apollo/client/link/retry')
-const { MAX_REQUESTS_IN_BATCH, MAX_RETRIES_ON_NETWORK_ERROR } = require('../constants')
+const { MAX_REQUESTS_IN_BATCH, MAX_RETRIES_ON_NETWORK_ERROR, LOAD_CHUNK_SIZE } = require('../constants')
 
 const FormData = require('form-data')
 
