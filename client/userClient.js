@@ -20,17 +20,17 @@ class UserClient extends CondoBot {
     }
 
     async singInByEmailAndPassword () {
-        const { identity,  password: secret } = this.authRequisites
+        const { email,  password } = this.authRequisites
         const { data: { auth: { user, token } } } = await this.client.mutate({
             mutation: SIGNIN_BY_EMAIL_MUTATION,
-            variables: { identity, secret },
+            variables: { identity: email, secret: password },
         })
         this.userId = user.id
         this.authToken = token
     }
 
     async singInByPhoneAndPassword () {
-        const { phone,  password } = this.authRequisites
+        const { phone, password } = this.authRequisites
         const { data: { obj: { item: user, token } } } = await this.client.mutate({
             mutation: SIGNIN_BY_PHONE_AND_PASSWORD_MUTATION_WITH_TOKEN,
             variables: { ...this.dvSender(), phone, password },
