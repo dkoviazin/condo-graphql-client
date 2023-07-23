@@ -1,6 +1,6 @@
 {
   "name": "condo-graphql-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Graphql to authenticate on condo platform",
   "main": "index.js",
   "author": "Dmitry Koviazin <dkovyazin@doma.ai>",

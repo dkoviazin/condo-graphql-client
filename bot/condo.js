@@ -17,6 +17,16 @@ class UploadingFile {
     }
 }
 
+
+const normalizeAuthRequisites = (requisites = {}) => {
+    const { email, identity, password, secret, phone } = requisites
+    return Object.fromEntries([
+        ['email', email || identity],
+        ['password', password || secret],
+        ['phone', phone],
+    ].filter(([, value]) => !!value))
+}
+
 class CondoBot {
 
 
@@ -40,7 +50,7 @@ class CondoBot {
     constructor (endpoint, authRequisites = {}, { clientName = 'apollo-server-client', locale = 'ru', logLevel = 'info' } = {}) {
         this.clientName = clientName
         this.endpoint = endpoint
-        this.authRequisites = authRequisites
+        this.authRequisites = normalizeAuthRequisites(authRequisites)
         this.logger = new Logger(clientName, logLevel)
         this.batchClient = this.createClient([this.errorLink(), this.authLink(), this.retryLink(), this.batchTerminateLink()])
         this.client = this.createClient([this.errorLink(), this.authLink(), this.retryLink(), this.uploadTerminateLink()])
@@ -74,10 +84,10 @@ class CondoBot {
     }
 
     async singInByEmailAndPassword () {
-        const { identity, secret } = this.authRequisites
+        const { email, password } = this.authRequisites
         const { data: { auth: { user, token } } } = await this.client.mutate({
             mutation: SIGNIN_BY_EMAIL_MUTATION,
-            variables: { identity, secret },
+            variables: { identity: email, secret: password },
         })
         this.userId = user.id
         this.authToken = token
