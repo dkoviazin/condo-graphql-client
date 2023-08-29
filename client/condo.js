@@ -27,6 +27,7 @@ const normalizeAuthRequisites = (requisites = {}) => {
     ].filter(([, value]) => !!value))
 }
 
+
 class CondoBot {
 
 

@@ -5,6 +5,7 @@ const {
     SIGNIN_BY_PHONE_AND_PASSWORD_MUTATION_WITH_TOKEN,
     User: UserGql,
 } = require('../lib/gql')
+const { OIDCAuthClient } = require('../lib/oidc')
 
 class UserClient extends CondoBot {
 
@@ -37,6 +38,35 @@ class UserClient extends CondoBot {
         })
         this.userId = user.id
         this.authToken = token
+    }
+
+    /**
+     * @example
+     * const client = new ApolloServerClient(`${CONDO_URL}/admin/api`, { phone:'***', password: '***' })
+     * await client.signIn()
+     * const miniAppClient = await client.signInToMiniApp(`${REGISTRY_URL}/graphql`)
+     */
+    async signInToMiniApp (apiEndpoint) {
+        if (!this.authToken) {
+            throw new Error('You need to authorize on condo first')
+        }
+        const miniAppAuth = new OIDCAuthClient()
+        const condoAuth = new OIDCAuthClient(this.authToken)
+        const { origin } = new URL(apiEndpoint)
+        // Start auth
+        const { location: startAuthUrl } = await miniAppAuth.oidcRequest(`${origin}/oidc/auth`)
+        // Condo redirects
+        const { location: interactUrl } = await condoAuth.oidcRequest(startAuthUrl)
+        const { location: interactCompleteUrl } = await condoAuth.oidcRequest(interactUrl)
+        const { location: completeAuthUrl } = await condoAuth.oidcRequest(interactCompleteUrl)
+        // Complete auth
+        await miniAppAuth.oidcRequest(completeAuthUrl)
+        const decodedToken = decodeURIComponent(miniAppAuth.cookieJar.get('keystone.sid'))
+
+        const miniAppClient = new UserClient(apiEndpoint, this.authRequisites)
+        miniAppClient.authToken = decodedToken.split('s:')[1]
+        miniAppClient.userId = this.userId
+        return miniAppClient
     }
 
     async currentUser () {
